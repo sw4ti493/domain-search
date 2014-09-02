@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+<div class="clearfix col-xs-12" >
+    <div class="form-group" style="padding-top: 50px; padding-left: 20px;">
+        <div class="input-group">
+            <input type="text" id="domain-check" placeholder="Name to Check..." class="form-control input-lg" x-webkit-speech requird>
+      <span class="input-group-btn">
+        <button id="lookup" class="button btn btn-default btn-lg"><span class="glyphicon glyphicon-search"></span></button>
+      </span>
+        </div>
+    </div>
+</div>
+    </div>
+    <div id="avail" style="color: green;">
+        <span>This domain is available.</span>
+    </div>
+    <div id="notavail" style="color: red;">
+        <span>This domain is not available.</span>
+    </div>
+    <div id="checking" style="color: black;">
+        <span>Checking domain...</span>
+    </div>
+    <script>
+        $(function(){
+          console.log("ready");
+               $("input[name='domain']").keyup( function(){
+                  console.log(this.value);
+                   if(this.value.length > 6)
+                   lookup(this.value) ;
+                   });
+          var count = 0 ;
+          function lookup(domainl) {
+          console.log(domainl+" LookingUp");
+
+              $.ajax({
+                url: "http://domains.bootname.com/api/v1/domain/"+ domain,
+                dataType: "jsonp",
+                success: function(response) {
+                     console.log(response);
+                     count++ ;
+                     var availability = response[0].available ;
+                     var html = "<li class='"+((availability)? "success":"fail")+"' + id='"+ count +"'>"+response[0].domain + ((availability)? " is available </li>" : " is not available </li>") ;
+                     $("ul#list").append(html).child("#count").hide().fadeIn();
+
+                    }}
+              )}
+        });
+
+
+
+
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="http://domains.bootname.com/js/v1/w.js"></script>
+</body>
+</html>
